@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
@@ -24,7 +23,7 @@ namespace PdfInvoice
         {
             get
             {
-                iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(LogoPath);
+                Image image = Image.GetInstance(LogoPath);
                 image.ScaleAbsolute(84, 72);
 
                 return AddCell(new CellRowSettings(3, 0, Element.ALIGN_JUSTIFIED, Element.ALIGN_MIDDLE, 0), image);

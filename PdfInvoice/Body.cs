@@ -48,7 +48,7 @@ namespace PdfInvoice
 
         private void BodyItemsTable(Document doc, string imagePath, List<string> testList, List<string> price)
         {
-            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imagePath);
+            Image image = Image.GetInstance(imagePath);
             image.ScaleToFitLineWhenOverflow = true;
 
             var table = TableSetUp(3);

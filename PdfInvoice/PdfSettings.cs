@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
@@ -18,44 +13,25 @@ namespace PdfInvoice
         public string BillToContent;
         public string LicenseeContent;
         public string CommentContent;
+        public string LogoPath;
         public List<PdfHeaderContent> PdfHeaderContentList;
         public List<PdfBodyContent> PdfBodyContentList;
         public List<PdfFooterContent> PdfFooterContentList;
-        public string LogoPath;
 
-        internal const float MarginLeft = 26;
-        internal const float MarginRight = 26;
-        internal const float MarginTop = 26;
-        internal const float MarginBottom = 26;
-        internal const float Padding = 30;
-        internal const int CellBorder = Rectangle.NO_BORDER;
+        public const float MarginLeft = 26;
+        public const float MarginRight = 26;
+        public const float MarginTop = 26;
+        public const float MarginBottom = 26;
+        public const float Padding = 30;
+        public const int CellBorder = Rectangle.NO_BORDER;
 
-        internal static readonly Rectangle PageSize = iTextSharp.text.PageSize.LETTER;
+        public static readonly Rectangle PageSize = iTextSharp.text.PageSize.LETTER;
 
-        internal static readonly BaseFont Bftimes = BaseFont.CreateFont(@"C:\Windows\Fonts\LSANS.TTF", BaseFont.CP1252, BaseFont.EMBEDDED);
-        internal static readonly BaseColor CellBackColorGrey = new BaseColor(231, 231, 231);
-        internal static readonly BaseColor CellBackColorWhite = new BaseColor(255, 255, 255);
+        public static readonly BaseFont Bftimes = BaseFont.CreateFont(@"C:\Windows\Fonts\LSANS.TTF", BaseFont.CP1252, BaseFont.EMBEDDED);
+        public static readonly BaseColor CellBackColorGrey = new BaseColor(231, 231, 231);
+        public static readonly BaseColor CellBackColorWhite = new BaseColor(255, 255, 255);
 
-        private readonly MemoryStream _stream = new MemoryStream();
-
-        public byte[] CreatePdf()
-        {
-            using (Document doc = new Document(PageSize, MarginLeft, MarginRight, MarginTop, MarginBottom))
-            {
-                PdfWriter writer = PdfWriter.GetInstance(doc, _stream);
-                writer.CloseStream = false;
-
-                doc.Open();
-
-                //Header.CreateHeader(doc, this);
-                //Body.CreateBody(doc, this);
-                //Footer.CreateFooter(doc, writer, this);
-            }
-
-            return _stream.ToArray();
-        }
-
-        internal PdfPTable TableSetUp(int rows)
+        public PdfPTable TableSetUp(int rows)
         {
             PdfPTable table = new PdfPTable(rows)
             {
@@ -66,7 +42,7 @@ namespace PdfInvoice
             return table;
         }
 
-        internal PdfPCell AddCell(CellRowSettings cellRowSettings, Phrase phrase, BaseColor cellColored)
+        public PdfPCell AddCell(CellRowSettings cellRowSettings, Phrase phrase, BaseColor cellColored)
         {
             PdfPCell cell = CellSettings(cellRowSettings, phrase);
 
@@ -77,7 +53,7 @@ namespace PdfInvoice
             return cell;
         }
 
-        internal PdfPCell AddCell(CellRowSettings cellRowSettings, iTextSharp.text.Image image)
+        public PdfPCell AddCell(CellRowSettings cellRowSettings, Image image)
         {
             PdfPCell cell = CellSettings(cellRowSettings, image);
 
@@ -86,7 +62,7 @@ namespace PdfInvoice
             return cell;
         }
 
-        internal PdfPCell AddCell(CellRowSettings cellRowSettings, string text, BaseColor cellColored, int fontsize = 10)
+        public PdfPCell AddCell(CellRowSettings cellRowSettings, string text, BaseColor cellColored, int fontsize = 10)
         {
             PdfPCell cell = CellSettings(cellRowSettings, text, new Font(Bftimes, fontsize, Font.NORMAL, BaseColor.BLACK));
 
@@ -97,7 +73,7 @@ namespace PdfInvoice
             return cell;
         }
 
-        internal PdfPCell AddTextForCellRow(CellRowSettings cellRowSettings, string text)
+        public PdfPCell AddTextForCellRow(CellRowSettings cellRowSettings, string text)
         {
             PdfPCell cell = CellSettings(cellRowSettings, text, new Font(Bftimes, 10, Font.NORMAL, BaseColor.BLACK));
 
@@ -106,7 +82,7 @@ namespace PdfInvoice
             return cell;
         }
 
-        internal PdfPCell AddTextForCellRow(CellRowSettings cellRowSettings, string text, BaseColor cellColored)
+        public PdfPCell AddTextForCellRow(CellRowSettings cellRowSettings, string text, BaseColor cellColored)
         {
             PdfPCell cell = CellSettings(cellRowSettings, text, new Font(Bftimes, 10, Font.NORMAL, BaseColor.BLACK));
 
@@ -117,7 +93,7 @@ namespace PdfInvoice
             return cell;
         }
 
-        internal PdfPCell AddCellWithMultipleContent(CellRowSettings cellRowSettings, string subText = "", List<string> subtextList = null)
+        public PdfPCell AddCellWithMultipleContent(CellRowSettings cellRowSettings, string subText = "", List<string> subtextList = null)
         {
             PdfPCell cell = new PdfPCell();
             SetSpanAndCellHeight(cell, cellRowSettings);
@@ -126,14 +102,14 @@ namespace PdfInvoice
                 AddCellElement(cell, cellRowSettings, subText);
             else
             {
-                for (int i = 0; i < subtextList.Count; i++)
-                    AddCellElement(cell, cellRowSettings, subtextList[i]);
+                foreach (var text in subtextList)
+                    AddCellElement(cell, cellRowSettings, text);
             }
 
             return cell;
         }
 
-        internal PdfPCell AddCellWithMultipleContent(CellRowSettings cellRowSettings, iTextSharp.text.Image image)
+        public PdfPCell AddCellWithMultipleContent(CellRowSettings cellRowSettings, Image image)
         {
             PdfPCell cell = new PdfPCell();
             SetSpanAndCellHeight(cell, cellRowSettings);
@@ -144,85 +120,93 @@ namespace PdfInvoice
             return cell;
         }
 
-        internal PdfPCell CellSettings(CellRowSettings cellRowSettings, iTextSharp.text.Image image)
+        public PdfPCell CellSettings(CellRowSettings cellRowSettings, Image image)
         {
-            PdfPCell cell = new PdfPCell(image);
-            cell.Border = CellBorder;
-            cell.HorizontalAlignment = cellRowSettings.horizontalAlign;
-            cell.VerticalAlignment = cellRowSettings.verticalAlign;
+            PdfPCell cell = new PdfPCell(image)
+            {
+                Border = CellBorder,
+                HorizontalAlignment = cellRowSettings.HorizontalAlign,
+                VerticalAlignment = cellRowSettings.VerticalAlign
+            };
 
             return cell;
         }
 
-        internal PdfPCell CellSettings(CellRowSettings cellRowSettings, Phrase phrase)
+        public PdfPCell CellSettings(CellRowSettings cellRowSettings, Phrase phrase)
         {
-            PdfPCell cell = new PdfPCell(phrase);
-            cell.Border = CellBorder;
-            cell.HorizontalAlignment = cellRowSettings.horizontalAlign;
-            cell.VerticalAlignment = cellRowSettings.verticalAlign;
+            PdfPCell cell = new PdfPCell(phrase)
+            {
+                Border = CellBorder,
+                HorizontalAlignment = cellRowSettings.HorizontalAlign,
+                VerticalAlignment = cellRowSettings.VerticalAlign
+            };
 
             return cell;
         }
 
-        internal PdfPCell CellSettings(CellRowSettings cellRowSettings, string text, Font font)
+        public PdfPCell CellSettings(CellRowSettings cellRowSettings, string text, Font font)
         {
-            PdfPCell cell = new PdfPCell(CellContence(text, font));
-            cell.Border = CellBorder;
-            cell.HorizontalAlignment = cellRowSettings.horizontalAlign;
-            cell.VerticalAlignment = cellRowSettings.verticalAlign;
+            PdfPCell cell = new PdfPCell(CellContence(text, font))
+            {
+                Border = CellBorder,
+                HorizontalAlignment = cellRowSettings.HorizontalAlign,
+                VerticalAlignment = cellRowSettings.VerticalAlign
+            };
 
             return cell;
         }
 
-        internal void AddCellElement(PdfPCell cell, CellRowSettings cellRowSettings, string text)
+        public void AddCellElement(PdfPCell cell, CellRowSettings cellRowSettings, string text)
         {
-            Paragraph paragraph = new Paragraph(CellContence(text, new Font(Bftimes, 10, Font.NORMAL, BaseColor.BLACK)));
-            paragraph.Alignment = cellRowSettings.horizontalAlign;
+            Paragraph paragraph = new Paragraph(CellContence(text, new Font(Bftimes, 10, Font.NORMAL, BaseColor.BLACK)))
+            {
+                Alignment = cellRowSettings.HorizontalAlign
+            };
             cell.AddElement(paragraph);
             cell.Border = CellBorder;
         }
 
-        internal Phrase CellContence(string text, Font times)
+        public Phrase CellContence(string text, Font times)
         {
             Phrase phrase = new Phrase(text, times);
 
             return phrase;
         }
 
-        internal void SetSpanAndCellHeight(PdfPCell cell, CellRowSettings cellRowSettings)
+        public void SetSpanAndCellHeight(PdfPCell cell, CellRowSettings cellRowSettings)
         {
-            if (cellRowSettings.rowspan != 0)
-                cell.Rowspan = cellRowSettings.rowspan;
+            if (cellRowSettings.Rowspan != 0)
+                cell.Rowspan = cellRowSettings.Rowspan;
 
-            if (cellRowSettings.colspan != 0)
-                cell.Colspan = cellRowSettings.colspan;
+            if (cellRowSettings.Colspan != 0)
+                cell.Colspan = cellRowSettings.Colspan;
 
-            if (cellRowSettings.cellHeight != 0)
-                cell.FixedHeight = cellRowSettings.cellHeight;
+            if (cellRowSettings.CellHeight != 0)
+                cell.FixedHeight = cellRowSettings.CellHeight;
         }
 
-        internal static PdfPCell EditBorders(PdfPCell cell)
+        public static PdfPCell EditBorders(PdfPCell cell)
         {
             cell.Border = Rectangle.RIGHT_BORDER;
             cell.BorderColor = BaseColor.WHITE;
             return cell;
         }
 
-        internal struct CellRowSettings
+        public struct CellRowSettings
         {
-            public int rowspan;
-            public int colspan;
-            public int horizontalAlign;
-            public int verticalAlign;
-            public int cellHeight;
+            public int Rowspan;
+            public int Colspan;
+            public int HorizontalAlign;
+            public int VerticalAlign;
+            public int CellHeight;
 
             public CellRowSettings(int rowspan, int colspan, int horizontalAlign, int verticalAlign, int cellHeight)
             {
-                this.rowspan = rowspan;
-                this.colspan = colspan;
-                this.horizontalAlign = horizontalAlign;
-                this.verticalAlign = verticalAlign;
-                this.cellHeight = cellHeight;
+                Rowspan = rowspan;
+                Colspan = colspan;
+                HorizontalAlign = horizontalAlign;
+                VerticalAlign = verticalAlign;
+                CellHeight = cellHeight;
             }
         }
     }
