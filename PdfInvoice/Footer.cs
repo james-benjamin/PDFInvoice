@@ -4,7 +4,7 @@ using iTextSharp.text.pdf;
 
 namespace PdfInvoice
 {
-    public class Footer:Pdf
+    public class Footer : PdfSettings
     {
         private static PdfPTable FooterTable { get; set; }
         

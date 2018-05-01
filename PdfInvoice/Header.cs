@@ -5,7 +5,7 @@ using iTextSharp.text.pdf;
 
 namespace PdfInvoice
 {
-    public class Header : Pdf
+    public class Header : PdfSettings
     {
         public void CreateHeader(Document doc)
         {

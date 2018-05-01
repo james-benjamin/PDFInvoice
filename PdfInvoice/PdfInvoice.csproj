@@ -51,6 +51,7 @@
     <Compile Include="PdfBodyContent.cs" />
     <Compile Include="PdfFooterContent.cs" />
     <Compile Include="PdfHeaderContent.cs" />
+    <Compile Include="PdfSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

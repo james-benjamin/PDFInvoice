@@ -5,7 +5,7 @@ using iTextSharp.text;
 
 namespace PdfInvoice
 {
-    public class Body : Pdf
+    public class Body : PdfSettings
     {
         private static decimal _totalPrice;
 
