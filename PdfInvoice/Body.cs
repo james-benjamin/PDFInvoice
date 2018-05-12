@@ -18,7 +18,7 @@ namespace PdfInvoice
 
             table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 16), "Bill To:", CellBackColorGrey));
             table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_MIDDLE, Element.ALIGN_MIDDLE, 16), "", CellBackColorWhite));
-            table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 16), "Licensee / Project Name", CellBackColorGrey));
+            table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 16), "Company", CellBackColorGrey));
 
             table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), BillToContent));
             table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0)));
@@ -27,7 +27,7 @@ namespace PdfInvoice
 
             BodyReferenceTable(doc);
 
-            foreach (var item in //RedContentList)
+            foreach (var item in PdfBodyContentList)
                 BodyItemsTable(doc, item.ImagePath, item.Text, item.Price);
 
             BodyTotalTable(doc, _totalPrice);

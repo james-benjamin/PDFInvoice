@@ -13,7 +13,6 @@ namespace PdfInvoice
         public string BillToContent;
         public string LicenseeContent;
         public string CommentContent;
-        public string LogoPath;
         public List<PdfHeaderContent> PdfHeaderContentList;
         public List<PdfBodyContent> PdfBodyContentList;
         public List<PdfFooterContent> PdfFooterContentList;
@@ -93,18 +92,24 @@ namespace PdfInvoice
             return cell;
         }
 
-        public PdfPCell AddCellWithMultipleContent(CellRowSettings cellRowSettings, string subText = "", List<string> subtextList = null)
+        public PdfPCell AddCellWithMultipleContent(CellRowSettings cellRowSettings, string subText = "")
         {
             PdfPCell cell = new PdfPCell();
             SetSpanAndCellHeight(cell, cellRowSettings);
 
-            if (subtextList == null)
-                AddCellElement(cell, cellRowSettings, subText);
-            else
-            {
-                foreach (var text in subtextList)
-                    AddCellElement(cell, cellRowSettings, text);
-            }
+            AddCellElement(cell, cellRowSettings, subText);
+            
+            return cell;
+        }
+
+        public PdfPCell AddCellWithMultipleContent(CellRowSettings cellRowSettings, string subText,
+            List<string> subtextList)
+        {
+            PdfPCell cell = new PdfPCell();
+            SetSpanAndCellHeight(cell, cellRowSettings);
+
+            foreach (var text in subtextList)
+                AddCellElement(cell, cellRowSettings, text);
 
             return cell;
         }

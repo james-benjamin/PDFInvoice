@@ -6,6 +6,8 @@ namespace PdfInvoice
 {
     public class Header : PdfSettings
     {
+        public string LogoPath;
+
         public void CreateHeader(Document doc)
         {
             var table = TableSetUp(4);
@@ -16,7 +18,7 @@ namespace PdfInvoice
 
             table.AddCell(EmptyColumn());
 
-            doc.Add(HeaderText(table, new List<string>() { "Invoice", "Date", "Invoice No.", "Sale Reference" }, Date, InvoiceNo, SalesRef));
+            doc.Add(HeaderText(table, new List<string>() { "Invoice", "Date", "Invoice No.", "Reference" }, Date, InvoiceNo, SalesRef));
         }
 
         private PdfPCell Logo
