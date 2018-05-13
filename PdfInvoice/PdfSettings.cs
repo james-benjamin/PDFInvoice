@@ -6,8 +6,6 @@ namespace PdfInvoice
 {
     public abstract class PdfSettings
     {
-        public List<PdfFooterContent> PdfFooterContentList;
-
         public const float MarginLeft = 26;
         public const float MarginRight = 26;
         public const float MarginTop = 26;
