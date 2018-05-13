@@ -6,9 +6,16 @@ namespace PdfInvoice
 {
     public class Header : PdfSettings
     {
-        public string LogoPath;
+        private Document _document;
+        private PdfHeaderContent _headerContent;
 
-        public void CreateHeader(Document doc)
+        public Header(Document doc, PdfHeaderContent headerContent)
+        {
+            _document = doc;
+            _headerContent = headerContent;
+        }
+
+        public void CreateHeader()
         {
             var table = TableSetUp(4);
             table.SpacingBefore = 0;
@@ -18,14 +25,14 @@ namespace PdfInvoice
 
             table.AddCell(EmptyColumn());
 
-            doc.Add(HeaderText(table, new List<string>() { "Invoice", "Date", "Invoice No.", "Reference" }, Date, InvoiceNo, SalesRef));
+            _document.Add(HeaderText(table, new List<string>() { "Invoice", "Date", "Invoice No.", "Reference" }, _headerContent.Date, _headerContent.InvoiceNo, _headerContent.SalesRef));
         }
 
         private PdfPCell Logo
         {
             get
             {
-                Image image = Image.GetInstance(LogoPath);
+                Image image = Image.GetInstance(_headerContent.LogoPath);
                 image.ScaleAbsolute(84, 72);
 
                 return AddCell(new CellRowSettings(3, 0, Element.ALIGN_JUSTIFIED, Element.ALIGN_MIDDLE, 0), image);

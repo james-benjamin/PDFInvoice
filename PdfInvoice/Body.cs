@@ -9,7 +9,16 @@ namespace PdfInvoice
     {
         private static decimal _totalPrice;
 
-        public void CreateBody(Document doc)
+        private Document _document;
+        private PdfBodyContent _bodyContent;
+
+        public Body(Document doc, PdfBodyContent bodyContent)
+        {
+            _document = doc;
+            _bodyContent = bodyContent;
+        }
+
+        public void CreateBody()
         {
             var table = TableSetUp(3);
             table.SpacingBefore = 30;
@@ -20,17 +29,17 @@ namespace PdfInvoice
             table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_MIDDLE, Element.ALIGN_MIDDLE, 16), "", CellBackColorWhite));
             table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 16), "Company", CellBackColorGrey));
 
-            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), BillToContent));
+            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), _bodyContent.BillToContent));
             table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0)));
-            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), LicenseeContent));
-            doc.Add(table);
+            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), _bodyContent.LicenseeContent));
+            _document.Add(table);
 
-            BodyReferenceTable(doc);
+            BodyReferenceTable(_document);
 
-            foreach (var item in PdfBodyContentList)
-                BodyItemsTable(doc, item.ImagePath, item.Text, item.Price);
+            foreach (var item in _bodyContent.BodySubContent)
+                BodyItemsTable(_document, item.ImagePath, item.Text, item.Price);
 
-            BodyTotalTable(doc, _totalPrice);
+            BodyTotalTable(_document, _totalPrice);
         }
 
         private void BodyReferenceTable(Document doc)
@@ -41,7 +50,7 @@ namespace PdfInvoice
 
             table.AddCell(EditBorders(AddCell(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 16), "Comment", CellBackColorGrey)));
 
-            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), CommentContent));
+            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), _bodyContent.CommentContent));
             table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0)));
             doc.Add(table);
         }

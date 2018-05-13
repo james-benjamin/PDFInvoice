@@ -9,15 +9,32 @@ namespace PdfInvoice
     {
         private readonly MemoryStream _stream = new MemoryStream();
 
-        public PdfHeaderContent HeaderContent = null;
-        public List<PdfBodyContent> BodyContentsList = null;
-        public PdfFooterContent FooterContent = null;
-
-        public Pdf(PdfHeaderContent headerContent, List<PdfBodyContent> bodyContentsList, PdfFooterContent footerContent)
+        private PdfHeaderContent _headerContent;
+        public PdfHeaderContent HeaderContent
         {
-            HeaderContent = headerContent;
-            BodyContentsList = bodyContentsList;
-            FooterContent = footerContent;
+            get { return _headerContent; }
+            set { _headerContent = value; }
+        }
+
+        private PdfBodyContent _bodyContent;
+        public PdfBodyContent BodyContent
+        {
+            get { return _bodyContent; }
+            set { _bodyContent = value; }
+        }
+
+        private PdfFooterContent _footerContent;
+        public PdfFooterContent FooterContent
+        {
+            get { return _footerContent; }
+            set { _footerContent = value; }
+        }
+
+        public Pdf(PdfHeaderContent headerContent, PdfBodyContent bodyContent, PdfFooterContent footerContent)
+        {
+            _headerContent = headerContent;
+            _bodyContent = bodyContent;
+            _footerContent = footerContent;
         }
 
         public byte[] CreatePdf()
@@ -29,8 +46,8 @@ namespace PdfInvoice
 
                 doc.Open();
 
-                //Header.CreateHeader(doc, this);
-                //Body.CreateBody(doc, this);
+                new Header(doc, _headerContent).CreateHeader();
+                new Body(doc, _bodyContent).CreateBody();
                 //Footer.CreateFooter(doc, writer, this);
             }
 

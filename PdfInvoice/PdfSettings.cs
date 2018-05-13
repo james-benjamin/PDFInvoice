@@ -6,15 +6,6 @@ namespace PdfInvoice
 {
     public abstract class PdfSettings
     {
-        public string Date;
-        public string InvoiceNo;
-        public string SalesRef;
-        public string Total;
-        public string BillToContent;
-        public string LicenseeContent;
-        public string CommentContent;
-        public List<PdfHeaderContent> PdfHeaderContentList;
-        public List<PdfBodyContent> PdfBodyContentList;
         public List<PdfFooterContent> PdfFooterContentList;
 
         public const float MarginLeft = 26;
