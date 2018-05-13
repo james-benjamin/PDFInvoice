@@ -48,7 +48,7 @@ namespace PdfInvoice
 
                 new Header(doc, _headerContent).CreateHeader();
                 new Body(doc, _bodyContent).CreateBody();
-                //Footer.CreateFooter(doc, writer, this);
+                new Footer(doc, _footerContent, writer).CreateFooter();
             }
 
             return _stream.ToArray();

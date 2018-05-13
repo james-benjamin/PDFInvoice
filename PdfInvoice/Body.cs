@@ -34,15 +34,15 @@ namespace PdfInvoice
             table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), _bodyContent.LicenseeContent));
             _document.Add(table);
 
-            BodyReferenceTable(_document);
+            BodyReferenceTable();
 
             foreach (var item in _bodyContent.BodySubContent)
-                BodyItemsTable(_document, item.ImagePath, item.Text, item.Price);
+                BodyItemsTable(item.ImagePath, item.Text, item.Price);
 
-            BodyTotalTable(_document, _totalPrice);
+            BodyTotalTable(_totalPrice);
         }
 
-        private void BodyReferenceTable(Document doc)
+        private void BodyReferenceTable()
         {
             var table = TableSetUp(1);
             table.SetWidths(new float[] { 100 });
@@ -52,10 +52,10 @@ namespace PdfInvoice
 
             table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), _bodyContent.CommentContent));
             table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0)));
-            doc.Add(table);
+            _document.Add(table);
         }
 
-        private void BodyItemsTable(Document doc, string imagePath, List<string> testList, List<string> price)
+        private void BodyItemsTable(string imagePath, List<string> testList, List<string> price)
         {
             Image image = Image.GetInstance(imagePath);
             image.ScaleToFitLineWhenOverflow = true;
@@ -84,10 +84,10 @@ namespace PdfInvoice
                     new CellRowSettings(1, 0, Element.ALIGN_RIGHT, Element.ALIGN_TOP, 0), price[1]));
             }
 
-            doc.Add(table);
+            _document.Add(table);
         }
 
-        private void BodyTotalTable(Document doc, decimal totalPrice)
+        private void BodyTotalTable(decimal totalPrice)
         {
             var table = TableSetUp(2);
             table.TotalWidth = (PageSize.Width - 52) / 4;
@@ -97,7 +97,7 @@ namespace PdfInvoice
 
             table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_CENTER, Element.ALIGN_TOP, 16), "Total", CellBackColorGrey));
             table.AddCell(AddCell(new CellRowSettings(1, 0, Element.ALIGN_CENTER, Element.ALIGN_TOP, 16), "$" + totalPrice.ToString(CultureInfo.InvariantCulture), CellBackColorGrey));
-            doc.Add(table);
+            _document.Add(table);
         }
     }
 }

@@ -28,35 +28,14 @@ namespace PdfInvoice
             FooterTable.HorizontalAlignment = Element.ALIGN_LEFT;
             FooterTable.SetWidths(new float[] { 15, 45 });
 
-            Disclosure(FooterTable, new Font(Bftimes, 10, Font.NORMAL, BaseColor.BLACK));
-            AccountInfo(FooterTable);
-            TermsAndCondictions(FooterTable, new Font(Bftimes, 6, Font.NORMAL, BaseColor.BLACK));
+            FooterInfo(FooterTable);
 
             FooterTable.WriteSelectedRows(0, -1, 26, _document.GetBottom(0) + FooterTable.TotalHeight, _writer.DirectContent);
         }
 
-        private void Disclosure(PdfPTable table, Font font)
+        private void FooterInfo(PdfPTable table)
         {
-            Phrase payPhrase = new Phrase(new Chunk("\n", font));
-            payPhrase.Add(new Chunk("", font).setLineHeight(13));
-
-            table.AddCell(AddCell(new CellRowSettings(1, 2, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), payPhrase, CellBackColorWhite));
-        }
-
-        private void AccountInfo(PdfPTable table)
-        {
-            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), "", new List<string>() { "", "", "", "", "", "" }));
-            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), "", new List<string>() { "", "", "", "", "" }));
-        }
-
-        private void TermsAndCondictions(PdfPTable table, Font font)
-        {
-            Phrase termsPhrase = new Phrase(new Chunk("\n\n\n", font).setLineHeight(10));
-            termsPhrase.Add(new Chunk("n", font).setLineHeight(10));
-            termsPhrase.Add(new Chunk("\n\n", font).setLineHeight(10));
-            termsPhrase.Add(new Chunk("\n", font).setLineHeight(10));
-            termsPhrase.Add(new Chunk("", font).setLineHeight(10));
-            table.AddCell(AddCell(new CellRowSettings(0, 2, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), termsPhrase, CellBackColorWhite));
+            table.AddCell(AddCellWithMultipleContent(new CellRowSettings(1, 0, Element.ALIGN_LEFT, Element.ALIGN_TOP, 0), "", _footerContent.TestList ));
         }
     }
 }
